@@ -1,0 +1,29 @@
+pipeline 
+{
+    agent any
+
+    stages
+    {
+        stage('Download')
+        {
+            steps
+            {
+                git 'https://github.com/doct15/example-tomcat-war.git'
+            }
+        }
+          stage('Artifacts')
+        {
+            steps
+            {
+                sh 'mvn package'
+            }
+        }
+         stage('Deploy')
+        {
+            steps
+            {
+                deploy adapters: [tomcat9(credentialsId: 'e03641f3-822e-4ef4-930e-10cd4cbf61bd', path: '', url: 'http://172.31.29.37:8080')], contextPath: 'vvbv123', war: '**/*.war'
+            }
+        }
+    }
+}
